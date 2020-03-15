@@ -2,7 +2,7 @@ import React from 'react';
 import { formatDate } from '../../utils/utils';
 import { getCurrentWeatherByCoords } from '../../api/weather';
 
-import './home.css'
+import './home.scss'
 
 class Home extends React.Component {
     constructor() {
