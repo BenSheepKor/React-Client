@@ -1,0 +1,38 @@
+*
+{
+    text-align: center;
+}
+
+.app
+{
+    min-height: 100vh;
+    margin: auto;
+    background: linear-gradient(to bottom right, #E1E6EB, #c2dbf6 );
+}
+
+.container, .row
+{
+    width: 100%;
+}
+
+.nav-link a
+{
+    color: #E1E6EB !important;
+    margin-right: 2em;
+}
+
+.map
+{
+    margin-left: 1em;
+    max-width: 25vw;
+    top: 0vh;
+    transform: translateY(50%);
+    position: sticky;
+    float: left;
+}
+
+.map Button
+{
+    float: left;
+    margin: unset;
+}
