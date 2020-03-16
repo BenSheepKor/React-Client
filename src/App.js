@@ -10,7 +10,7 @@ import MyMap from './components/MyMap'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import { Navbar, Nav, Container, Col, Row, Button } from 'react-bootstrap'
 
-import './App.css'
+import './App.scss'
 
 const startingState =
 {

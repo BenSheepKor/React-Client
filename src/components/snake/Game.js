@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './styles.css'
+import './styles.scss'
 
 import Snake from './Snake'
 import Food from './Food'

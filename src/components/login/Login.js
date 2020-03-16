@@ -3,7 +3,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
-import './Login.css'
+import './Login.scss'
 
 class Login extends React.Component {
     constructor() {
