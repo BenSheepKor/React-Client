@@ -26,7 +26,7 @@ class App extends React.Component
 
   state = startingState
 
-  componentWillMount()
+  componentDidMount()
   {
     navigator.geolocation.getCurrentPosition((position) =>
     {
@@ -114,14 +114,16 @@ class App extends React.Component
 
         </Router>
 
-        <div className="map">
+        {this.state.mapToggledOn ? 
+          <div className="map">
+            <MyMap coords={[this.state.lat, this.state.lng]}/>
+          </div>
+          : null
+        }
+        <div className="MapButton">
           <Button onClick={this.toggleMap}>
             Toggle Map {this.toggle}
           </Button>
-          {this.state.coordsReady && this.state.mapToggledOn ? 
-            <MyMap coords={[this.state.lat, this.state.lng]}/>
-            : null
-          }
         </div>
 
       </div>

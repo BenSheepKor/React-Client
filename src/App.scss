@@ -23,16 +23,21 @@
 
 .map
 {
-    margin-left: 1em;
-    max-width: 25vw;
-    top: 0vh;
-    transform: translateY(50%);
-    position: sticky;
-    float: left;
+    position: fixed;
+    bottom: 3.2em;
+    right: 0.25em;
+    width: 15vw;
+    height: 25vh;
 }
 
-.map Button
+.MapButton
 {
-    float: left;
-    margin: unset;
+    bottom: 0.5em;
+    right: 0.25em;
+    position: fixed;
+    
+    .btn.btn-primary
+    {
+        margin: unset;
+    }
 }

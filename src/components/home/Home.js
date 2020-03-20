@@ -20,7 +20,7 @@ class Home extends React.Component {
         return Math.round(temp)
     }
 
-    componentWillMount()
+    componentDidMount()
     {
         navigator.geolocation.getCurrentPosition((position) =>
         {
