@@ -1,105 +1,113 @@
 import React from 'react';
 
+import Axios from 'axios'
+import sha256 from 'js-sha256';
+
+import { SERVER_API_IP } from '../../api/config'
+
+import './Login.scss'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
-import './Login.scss'
+const initState =
+{
+    cred: "",
+    password: "",
+    isEmail: false,
+    cantLogin: true,
+    loginWasWrong: false
+}
 
-class Login extends React.Component {
-    constructor() {
+class Login extends React.Component
+{
+    constructor()
+    {
         super();
 
-        // State
-        this.state = {
-            welcomeName: '...',
-            welcomeSurname: '',
-            userName: '',
-            faculty: '',
-            year: '',
-            sex: '',
-            cantLogin: true
-        }
-
-        // Method mapping
-        this.nameInput = this.nameInput.bind(this);
+        this.state = initState;
     }
 
-    loginCalls = e =>
+    componentDidMount()
     {
-        this.canLogin();
-        this.nameInput(e);
+        document.addEventListener('keydown', this.handleKeyPress)
     }
 
-    canLogin()
+    handleKeyPress = event =>
     {
-        if (this.state.welcomeName === '...' || !this.state.welcomeName)
+        if (event.keyCode === 13) //enter key
         {
-            this.setState({cantLogin: false})
-        }        
+            if (!this.state.cantLogin)
+            {
+                this.sendLoginRequest();
+                this.setState({ loginWasWrong: false })
+            }
+            else // handle the case that he presses enter and cant login
+                this.setState({ loginWasWrong: true })
+        }
     }
 
-    /**
-     * 
-     * @param {Event} e. The event passed in when the input changes
-     * 
-     * Reads the name that the user inputs and formats it so it outputs nicelly.
-     */
-    nameInput(e) {
-        // Κάνε κεφαλαίο το πρώτο γράμμα
-        let name = e.target.value.charAt(0).toUpperCase() + e.target.value.substring(1);
+    handleCredChange = event =>
+    {
+        this.setState({ cred: event.target.value });
 
-        /**
-         * Αν το όνομα έχει περισσότερα από 6 γράμματα και τελειώνει σε ος, κατά πάσα πιθανότητα τονίζεται στην πρόπαραλήγουσα.
-         * Σε αυτή την περίπτωση, στην αιτιατική το όνομα λήγει σε 'ε'. πχ: Δημήτριος -> Δημήτρης αλλά Δήμος -> Δήμο (όχι Δήμε)
-         * Χωράει αμφισβήτηση και περισσότερο testing/brainstorming
-         */
-        if (name.length >= 6 && name.indexOf('ο') === (name.length - 2) && name.indexOf('ς') === (name.length - 1)) {
-            name = name.substr(name, name.indexOf('ς') - 1) + 'ε';
+        // Check if both password and email/username are filled
+        if (this.state.cred !== "" && this.state.password !== "")
+            this.setState({cantLogin: false})
+        else
+            this.setState({cantLogin: true})
+    };
+
+    handlePassChange = event =>
+    {
+        this.setState({ password: event.target.value });
+
+        // Check if both password and email/username are filled
+        if (this.state.cred !== "" && this.state.password !== "")
+            this.setState({cantLogin: false})
+        else
+            this.setState({cantLogin: true})
+    };
+
+    sendLoginRequest = async () =>
+    {
+        // Check if the user is using his e-mail or his username
+        if (this.state.cred.indexOf('@') !== -1 && this.state.cred.indexOf('.') !== -1)
+            this.setState({isEmail : true})
+
+        const password = sha256(this.state.password, this.state.password) // the hash of the password
+
+        let query = ""
+
+        if (this.state.isEmail)
+        {
+            query = `mutation{login(email: "${this.state.cred}", password: "${password}"){token}}`
         }
-        // Αν το όνομα λήγει σε ς, αφαίρεσε το
-        else if (name.indexOf('ς') !== -1) {
-            name = name.substr(name, name.indexOf('ς'))
+        else
+        {
+            query = `mutation{login(username: "${this.state.cred}", password: "${password}"){token}}`
         }
 
-        // Update state
-        this.setState({
-            welcomeName: name
+        await Axios.post(SERVER_API_IP, {query: query}).then(res =>
+        {
+            console.log(res.data)
         })
     }
 
-    signUp()
+    render()
     {
-        alert('Not ready yet, fagget!')
-    }
+        return(
+            <div className="Login">
+                <h1>Login</h1>
 
-    render() {
-        return (
-            <div>
-                <h2>Γεια σου {this.state.welcomeName}</h2>
-                <div className="form-container">
-                    <form>
-                        <input type="text" placeholder="Όνομα" onChange={this.loginCalls}></input><br></br>
-
-                        <input type="text" placeholder="Επόνυμο"></input><br></br>
-
-                        <input type="text" placeholder="Username"></input><br></br>
-
-                        <input type="text" placeholder="Σχολή"></input><br></br>
-
-                        <input type="email" placeholder="Email"></input><br></br>
-
-                        <input type="password" placeholder="Κωδικός"></input><br></br>
-                    </form>
-                </div>
+                <br></br>
+                <input type="text" name="username or email" value={this.state.cred} onChange={this.handleCredChange} placeholder="your username or email" />
+                <br></br>
+                <input type="password" name="password" value={this.state.password} onChange={this.handlePassChange} placeholder="your password" />
+                <br></br>
 
                 <ButtonGroup>
-                    <Button variant="primary" size="lg" disabled={this.state.cantLogin}>
+                    <Button variant="primary" size="lg" disabled={this.state.cantLogin} onClick={this.sendLoginRequest}>
                         Login
-                    </Button>
-                </ButtonGroup>
-                <ButtonGroup>
-                    <Button variant="primary" size="lg" onClick={this.signUp}>
-                        Sign Up
                     </Button>
                 </ButtonGroup>
             </div>
