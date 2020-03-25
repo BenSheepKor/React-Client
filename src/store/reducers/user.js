@@ -7,12 +7,12 @@ const userState = {
 function userReducer(state = userState, action){
     switch(action.type){
         case STORE_TOKEN:
-            return Object.assign({}, state, {token: action.payload});
+            return {...state , token: action.payload};
         case CLEAR_TOKEN:
-            return Object.assign({}, state , {token: null});
+            return {...state, token: null};
+        default:
+            return state;
     }
-
-    return state;
 }
 
 export default userReducer;
