@@ -18,9 +18,10 @@ export default class MyMap extends Component
     {
         return (
             <Map center={this.props.coords} zoom={14} style={{ width: '100%', height: '100%' }}>
-                <TileLayer  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 
-                            attribution="&copy; <a href='http://osm.org/copyright' target='_blank'>OpenStreetMap</a> contributors"
-                            maxZoom="19"
+                <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 
+                    attribution="&copy; <a href='http://osm.org/copyright' target='_blank'>OpenStreetMap</a> contributors"
+                    maxZoom="19"
                 />
                 <Marker position={this.props.coords}>
                     <Popup>You are Here!</Popup>
