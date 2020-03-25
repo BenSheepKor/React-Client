@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import store from './store';
+import { storeToken } from './store/actions/user';
+
+window.store = store;
+window.storeToken = storeToken;
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
