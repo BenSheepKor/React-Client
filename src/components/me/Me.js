@@ -22,8 +22,8 @@ export default class Me extends Component
 
     async componentWillMount ()
     {
-        this.setState({ token: token })
-        const options = `{ headers: {Authorization: Bearer ${this.state.token} }}`
+        // this.setState({token: storedToken})
+        const options = `{ headers: { Authorization: Bearer ${this.state.token} }}`
 
         await Axios.get(SERVER_API_IP, options).then(res =>
         {
